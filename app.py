@@ -4,14 +4,11 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 st.set_page_config(page_title="AI Doctor", page_icon="🩺")
-st.title("🩺 AI Doctor – Disease & Medical Test Recommendation")
+
+st.title("🩺 AI Doctor – Disease & Medical Test Recommendation (FINAL)")
 
 # -------- LOAD DATA --------
-@st.cache_data
-def load_data():
-    return pd.read_excel("symptoms based medical test recommendations (2).xlsx")
-
-data = load_data()
+data = pd.read_excel("symptoms based medical test recommendations (2).xlsx")
 
 data = data.rename(columns={
     "Questions": "symptoms",
@@ -19,15 +16,14 @@ data = data.rename(columns={
     "Recommending medical tests": "test"
 })
 
-# -------- VECTORIZE --------
+# -------- VECTORIZATION --------
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(data["symptoms"])
 
-# -------- MODEL 1: Disease Prediction --------
+# -------- MODELS --------
 disease_model = MultinomialNB()
 disease_model.fit(X, data["disease"])
 
-# -------- MODEL 2: Test Prediction --------
 test_model = MultinomialNB()
 test_model.fit(X, data["test"])
 
@@ -46,7 +42,8 @@ if st.button("Get Diagnosis"):
         disease_pred = disease_model.predict(user_vec)[0]
         test_pred = test_model.predict(user_vec)[0]
 
-        st.success("🧠 Diagnosis Result")
-        st.write(f"**🦠 Possible Disease:** {disease_pred}")
-        st.write(f"**🧪 Recommended Medical Test:** {test_pred}")
+        st.success("Diagnosis Result")
+        st.write("🦠 **Possible Disease:**", disease_pred)
+        st.write("🧪 **Recommended Medical Test:**", test_pred)
 
+       
