@@ -4,19 +4,22 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 st.set_page_config(page_title="AI Doctor", page_icon="🩺")
-
-st.title("🩺 AI Doctor – Disease & Medical Test Recommendation (FINAL)")
+st.title("🩺 AI Doctor – Disease & Medical Test Recommendation")
 
 # -------- LOAD DATA --------
 data = pd.read_excel("symptoms based medical test recommendations (2).xlsx")
 
+# 🔥 CLEAN COLUMN NAMES (IMPORTANT FIX)
+data.columns = data.columns.str.strip().str.lower()
+
+# Rename after cleaning
 data = data.rename(columns={
-    "Questions": "symptoms",
-    "Disease": "disease",
-    "Recommending medical tests": "test"
+    "questions": "symptoms",
+    "disease": "disease",
+    "recommending medical tests": "test"
 })
 
-# -------- VECTORIZATION --------
+# -------- VECTORIZE --------
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(data["symptoms"])
 
@@ -43,7 +46,7 @@ if st.button("Get Diagnosis"):
         test_pred = test_model.predict(user_vec)[0]
 
         st.success("Diagnosis Result")
-        st.write("🦠 **Possible Disease:**", disease_pred)
-        st.write("🧪 **Recommended Medical Test:**", test_pred)
+        st.write(f"🦠 **Possible Disease:** {disease_pred}")
+        st.write(f"🧪 **Recommended Medical Test:** {test_pred}")
 
-       
+        
