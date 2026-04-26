@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # PAGE CONFIG
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="AI Doctor",
+    page_title="DiagnoSphere",
     page_icon="🩺",
     layout="wide",
     initial_sidebar_state="expanded",
